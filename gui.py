@@ -1,7 +1,6 @@
 from tkinter import *
 from game import *
 
-
 IMG_SIZE = 72
 WIDTH = 10 * IMG_SIZE
 HEIGHT = 10.5 * IMG_SIZE

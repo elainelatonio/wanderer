@@ -10,7 +10,7 @@ class Game:
         self.hero = Hero()
         self.boss = self.area.boss
         self.root = root
-        self.bind_arrows()
+        self.bind_arrow_keys()
         self.strike_count = 0
         self.set_message(f"Game! Kill the Boss and get the key to advance!")
 
@@ -21,28 +21,28 @@ class Game:
         self._message = value
         return self._message
 
-    def bind_arrows(self):
+    def bind_arrow_keys(self):
         key_list = [("left", "x", -1), ("up", "y", -1), ("right", "x", 1), ("down", "y", 1)]
         self.left_bind = self.root.bind('<Left>', lambda event, key=key_list[0][0], direction=key_list[0][1],
-                                                            step=key_list[0][2]: self.hit_arrow(event, key, direction,
+                                                            step=key_list[0][2]: self.hit_arrow_keys(event, key, direction,
                                                                                                 step))
         self.right_bind = self.root.bind('<Right>', lambda event, key=key_list[2][0], direction=key_list[2][1],
-                                                              step=key_list[2][2]: self.hit_arrow(event, key, direction,
+                                                              step=key_list[2][2]: self.hit_arrow_keys(event, key, direction,
                                                                                                   step))
         self.up_bind = self.root.bind('<Up>', lambda event, key=key_list[1][0], direction=key_list[1][1],
-                                                        step=key_list[1][2]: self.hit_arrow(event, key, direction,
+                                                        step=key_list[1][2]: self.hit_arrow_keys(event, key, direction,
                                                                                             step))
         self.down_bind = self.root.bind('<Down>', lambda event, key=key_list[3][0], direction=key_list[3][1],
-                                                            step=key_list[3][2]: self.hit_arrow(event, key, direction,
+                                                            step=key_list[3][2]: self.hit_arrow_keys(event, key, direction,
                                                                                                 step))
 
-    def unbind_arrows(self):
+    def unbind_arrow_keys(self):
         self.root.unbind('<left>', self.left_bind)
         self.root.unbind('<right>', self.right_bind)
         self.root.unbind('<up>', self.up_bind)
         self.root.unbind('<down>', self.down_bind)
 
-    def hit_arrow(self, event, key, direction, step):
+    def hit_arrow_keys(self, event, key, direction, step):
         self.space_id = self.root.bind('<space>', self.hit_space)
         self.root.unbind('<space>', self.space_id)
         self.hero.img = "hero_" + key
@@ -136,7 +136,7 @@ class Game:
         self.set_message("GAME OVER")
         self.hero.img = "hero_dead"
         self.root.unbind('<space>', self.space_id)
-        self.unbind_arrows()
+        self.unbind_arrow_keys()
 
     def clear_level(self):
         del self.area
