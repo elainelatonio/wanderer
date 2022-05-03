@@ -29,7 +29,7 @@ class Gui:
 
     def display_text(self):
         self.canvas.create_text(10, 10 * IMG_SIZE, fill="white",
-                                text=f"Hero (Level {self.game.hero.get_level()}) "
+                                text=f"{self.game.hero.name} (Level {self.game.hero.get_level()}) "
                                      f"HP: {self.game.hero.get_hp()}/{self.game.hero.maxhp} | "
                                      f"DP: {self.game.hero.dp} | SP: {self.game.hero.sp}\n",
                                 anchor=NW)
@@ -42,7 +42,7 @@ class Gui:
                                     text=f"{self.game.monster_to_fight.name}(Level {self.game.monster_to_fight.level}) "
                                          f"HP: {self.game.monster_to_fight.get_hp()}/{self.game.monster_to_fight.maxhp}"
                                          f" | DP: {self.game.monster_to_fight.dp} | "
-                                         f"SP: {self.game.monster_to_fight.sp}", anchor=NW)
+                                         f"SP: {self.game.monster_to_fight.sp}", anchor=NW, width=250, justify=RIGHT)
 
     def load_images(self):
         dir = "images/"

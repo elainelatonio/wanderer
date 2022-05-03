@@ -86,7 +86,7 @@ class Monster(Character):
         self.x = x
         self.y = y
         self.img = str(self.type).casefold()
-        self.hp = self.set_hp(50)  # 2 * self.level * Dice.roll())
+        self.hp = self.set_hp(2 * self.level * Dice.roll())
         self.maxhp = self.hp
         self.dp = round(self.level / 2 * Dice.roll())
         self.sp = self.level * Dice.roll()
@@ -118,6 +118,6 @@ class Boss(Monster):
         super().__init__(x, y, level)
         self.name = self.type
         self.hp = self.set_hp(2 * self.level * Dice.roll() + Dice.roll())
-        self.dp = self.level / 2 * Dice.roll() + Dice.roll() / 2
+        self.dp = round(self.level / 2 * Dice.roll() + Dice.roll() / 2)
         self.sp = self.level * Dice.roll() + self.level
         self.maxhp = self.hp

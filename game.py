@@ -22,19 +22,18 @@ class Game:
         return self._message
 
     def bind_arrow_keys(self):
-        key_list = [("left", "x", -1), ("up", "y", -1), ("right", "x", 1), ("down", "y", 1)]
-        self.left_bind = self.root.bind('<Left>', lambda event, key=key_list[0][0], direction=key_list[0][1],
-                                                            step=key_list[0][2]: self.hit_arrow_keys(event, key, direction,
-                                                                                                step))
-        self.right_bind = self.root.bind('<Right>', lambda event, key=key_list[2][0], direction=key_list[2][1],
-                                                              step=key_list[2][2]: self.hit_arrow_keys(event, key, direction,
-                                                                                                  step))
-        self.up_bind = self.root.bind('<Up>', lambda event, key=key_list[1][0], direction=key_list[1][1],
-                                                        step=key_list[1][2]: self.hit_arrow_keys(event, key, direction,
-                                                                                            step))
-        self.down_bind = self.root.bind('<Down>', lambda event, key=key_list[3][0], direction=key_list[3][1],
-                                                            step=key_list[3][2]: self.hit_arrow_keys(event, key, direction,
-                                                                                                step))
+        self.left_bind = self.root.bind('<Left>', lambda event, key="left", direction="x",
+                                                         step=-1: self.hit_arrow_keys(event, key, direction,
+                                                                                      step))
+        self.right_bind = self.root.bind('<Right>', lambda event, key="right", direction="x",
+                                                           step=1: self.hit_arrow_keys(event, key, direction,
+                                                                                       step))
+        self.up_bind = self.root.bind('<Up>', lambda event, key="up", direction="y",
+                                                     step=-1: self.hit_arrow_keys(event, key, direction,
+                                                                                  step))
+        self.down_bind = self.root.bind('<Down>', lambda event, key="down", direction="y",
+                                                         step=1: self.hit_arrow_keys(event, key, direction,
+                                                                                     step))
 
     def unbind_arrow_keys(self):
         self.root.unbind('<left>', self.left_bind)
@@ -46,7 +45,7 @@ class Game:
         self.space_id = self.root.bind('<space>', self.hit_space)
         self.root.unbind('<space>', self.space_id)
         self.hero.img = "hero_" + key
-        if self.allow_move(self.hero, f"{direction} = {step}"):
+        if self.allow_move(self.hero, (direction, step)):
             self.set_message("")
             if direction == "x":
                 x, y = step, 0
@@ -59,9 +58,8 @@ class Game:
                 self.start_battle()
 
     def check_tiles(self, character):
-        position = character.get_position()
-        surrounding_tiles = self.area.get_surrounding_tiles(position)
-        directions = ["x = -1", "y = -1", "x = 1", "y = 1"]
+        surrounding_tiles = self.area.get_surrounding_tiles(character.get_position())
+        directions = [("x",-1), ("y",-1), ("x",1), ("y",1)]
         surrounding_tiles = dict(zip(directions, surrounding_tiles))
         return surrounding_tiles
 
@@ -76,13 +74,13 @@ class Game:
         for monster in characters:
             surrounding_tiles = self.check_tiles(monster)
             possible_moves = [key for key, value in surrounding_tiles.items() if value == self.area.map.floor]
-            random_move = str(random.choice(possible_moves))
+            random_move = random.choice(possible_moves)
             if random_move[0] == "x":
-                x = int(random_move.split()[2])
+                x = random_move[1]
                 y = 0
             elif random_move[0] == "y":
                 x = 0
-                y = int(random_move.split()[2])
+                y = random_move[1]
             monster.move(self.hero, x, y)
 
     def check_if_battle(self):
