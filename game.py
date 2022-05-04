@@ -36,9 +36,15 @@ class Game:
         self.root.unbind('<Up>', self.up_bind)
         self.root.unbind('<Down>', self.down_bind)
 
-    def hit_arrow_keys(self, event, key, axis, step):
+    def bind_space_key(self):
         self.space_id = self.root.bind('<space>', self.hit_space)
+
+    def unbind_space_key(self):
         self.root.unbind('<space>', self.space_id)
+
+    def hit_arrow_keys(self, event, key, axis, step):
+        self.bind_space_key()
+        self.unbind_space_key()
         self.hero.img = "hero_" + key
         if self.allow_move(self.hero, (axis, step)):
             self.set_message("")
@@ -80,7 +86,7 @@ class Game:
     def start_battle(self):
         self.hero.img = "hero_battle"
         self.set_message(f"Battle with {self.monster_to_fight.name}, hit <space> to strike!")
-        self.space_id = self.root.bind('<space>', self.hit_space)
+        self.bind_space_key()
 
     def hit_space(self, event):
         self.hero.img = self.count_strikes()
@@ -88,11 +94,11 @@ class Game:
         self.hero.get_key(self.hero, self.monster_to_fight)
         if self.monster_to_fight.get_hp() == 0 and self.hero.just_got_key:
             self.set_message("Level up! You got the key!")
-            self.end_battle()
+            self.unbind_space_key()
         elif self.monster_to_fight.get_hp() == 0 and self.hero.just_got_key is False:
             self.hero.level_up()
             self.set_message("Level up!")
-            self.end_battle()
+            self.unbind_space_key()
         if self.check_if_clear_level():
             pass
         elif self.monster_to_fight.get_hp() > 0:
@@ -114,13 +120,11 @@ class Game:
         else:
             return False
 
-    def end_battle(self):
-        self.root.unbind('<space>', self.space_id)
 
     def end_game(self):
         self.set_message("GAME OVER")
         self.hero.img = "hero_dead"
-        self.end_battle()
+        self.unbind_space_key()
         self.unbind_arrow_keys()
 
     def clear_level(self):
