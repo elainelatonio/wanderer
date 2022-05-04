@@ -120,7 +120,7 @@ class Game:
     def end_game(self):
         self.set_message("GAME OVER")
         self.hero.img = "hero_dead"
-        self.root.unbind('<space>', self.space_id)
+        self.end_battle()
         self.unbind_arrow_keys()
 
     def clear_level(self):
