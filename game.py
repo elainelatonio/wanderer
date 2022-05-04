@@ -47,8 +47,7 @@ class Game:
             else:
                 x, y = 0, step
             self.hero.move(x, y)
-            if self.hero.move_count % 2 == 0:
-                self.random_move(Monster.monsters)
+            self.random_move(Monster.monsters)
         if self.check_if_battle():
             self.start_battle()
 
@@ -60,14 +59,15 @@ class Game:
             return False
 
     def random_move(self, characters):
-        for monster in characters:
-            possible_moves = self.area.get_floor_tiles(monster.get_position())
-            random_move = random.choice(possible_moves)
-            if random_move[0] == "x":
-                x, y = random_move[1], 0
-            elif random_move[0] == "y":
-                x, y = 0, random_move[1]
-            monster.move(x, y)
+        if self.hero.move_count % 2 == 0:
+            for monster in characters:
+                possible_moves = self.area.get_floor_tiles(monster.get_position())
+                random_move = random.choice(possible_moves)
+                if random_move[0] == "x":
+                    x, y = random_move[1], 0
+                elif random_move[0] == "y":
+                    x, y = 0, random_move[1]
+                monster.move(x, y)
 
     def check_if_battle(self):
         battle = False

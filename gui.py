@@ -48,7 +48,7 @@ class Gui:
         self.canvas.create_text(10, 10 * IMG_SIZE, fill="white",
                                 text=f"{self.game.hero.name} (Level {self.game.hero.get_level()}) "
                                      f"HP: {self.game.hero.get_hp()}/{self.game.hero.maxhp} | "
-                                     f"DP: {self.game.hero.dp} | SP: {self.game.hero.sp}\n",
+                                     f"DP: {self.game.hero.dp} | SP: {self.game.hero.sp}",
                                 anchor=NW)
         self.canvas.create_text(10, 10 * IMG_SIZE + 15, fill="deep sky blue",
                                 text=f"LEVEL {self.game.area.level}", anchor=NW)
