@@ -51,11 +51,7 @@ class Game:
         self.hero.img = "hero_" + key
         if self.allow_move(self.hero, (axis, step)):
             self.set_message("")
-            if axis == "x":
-                x, y = step, 0
-            else:
-                x, y = 0, step
-            self.hero.move(x, y)
+            self.take_step(self.hero,axis,step)
             self.random_move(Monster.monsters)
         if self.check_if_battle():
             self.start_battle()
@@ -67,16 +63,19 @@ class Game:
         else:
             return False
 
+    def take_step(self, character, axis, step):
+        if axis == "x":
+            x, y = step, 0
+        else:
+            x, y = 0, step
+        character.move(x, y)
+
     def random_move(self, characters):
         if self.hero.move_count % 2 == 0:
             for monster in characters:
                 possible_moves = self.area.get_floor_tiles(monster.get_position())
-                random_move = random.choice(possible_moves)
-                if random_move[0] == "x":
-                    x, y = random_move[1], 0
-                elif random_move[0] == "y":
-                    x, y = 0, random_move[1]
-                monster.move(x, y)
+                (axis, step) = random.choice(possible_moves)
+                self.take_step(monster, axis, step)
 
     def check_if_battle(self):
         battle = False
