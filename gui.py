@@ -23,7 +23,7 @@ class Gui:
     def draw_screen(self):
         self.canvas.delete("all")
         self.draw_map()
-        self.canvas.create_rectangle(0, 10 * IMG_SIZE, 10.5 * IMG_SIZE, 10.5 * IMG_SIZE, fill="black")
+        self.canvas.create_rectangle(0, 10 * IMG_SIZE, 10 * IMG_SIZE, 10.5 * IMG_SIZE, fill="black")
         self.display_characters()
         self.display_text()
 
@@ -52,14 +52,14 @@ class Gui:
                                 anchor=NW)
         self.canvas.create_text(10, 10 * IMG_SIZE + 15, fill="deep sky blue",
                                 text=f"LEVEL {self.game.area.level}", anchor=NW)
-        self.canvas.create_text(60, 10 * IMG_SIZE + 15, fill="yellow",
+        self.canvas.create_text(70, 10 * IMG_SIZE + 15, fill="yellow",
                                 text=f"{self.game.get_message()}", anchor=NW)
         if self.game.check_if_battle():
-            self.canvas.create_text(460, 10 * IMG_SIZE, fill="white",
-                                    text=f"{self.game.monster_to_fight.name}(Level {self.game.monster_to_fight.level}) "
+            self.canvas.create_text(470, 10 * IMG_SIZE, fill="white",
+                                    text=f"{self.game.monster_to_fight.name} (Level {self.game.monster_to_fight.level}) "
                                          f"HP: {self.game.monster_to_fight.get_hp()}/{self.game.monster_to_fight.maxhp}"
                                          f" | DP: {self.game.monster_to_fight.dp} | "
-                                         f"SP: {self.game.monster_to_fight.sp}", anchor=NW, width=250, justify=RIGHT)
+                                         f"SP: {self.game.monster_to_fight.sp}", anchor=NW, width=240, justify=RIGHT)
 
     def load_images(self):
         dir = "images/"
