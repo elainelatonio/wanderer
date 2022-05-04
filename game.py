@@ -47,10 +47,9 @@ class Game:
             else:
                 x, y = 0, step
             self.hero.move(x, y)
-        if self.hero.move_count % 2 == 0:
-            self.random_move(Monster.monsters)
+            if self.hero.move_count % 2 == 0:
+                self.random_move(Monster.monsters)
         if self.check_if_battle():
-            self.hero.img = "hero_battle"
             self.start_battle()
 
     def allow_move(self, character, direction):
@@ -79,6 +78,7 @@ class Game:
                 return battle
 
     def start_battle(self):
+        self.hero.img = "hero_battle"
         self.set_message(f"Battle with {self.monster_to_fight.name}, hit <space> to strike!")
         self.space_id = self.root.bind('<space>', self.hit_space)
 
@@ -86,15 +86,15 @@ class Game:
         self.hero.img = self.count_strikes()
         self.hero.strike(self.hero, self.monster_to_fight)
         self.hero.get_key(self.hero, self.monster_to_fight)
-        if self.check_if_clear_level():
-            pass
-        elif self.monster_to_fight.get_hp() == 0 and self.hero.just_got_key:
+        if self.monster_to_fight.get_hp() == 0 and self.hero.just_got_key:
             self.set_message(f"Level up! You got the key!")
             self.end_battle()
         elif self.monster_to_fight.get_hp() == 0 and self.hero.just_got_key is False:
             self.hero.level_up()
             self.set_message(f"Level up!")
             self.end_battle()
+        if self.check_if_clear_level():
+            pass
         elif self.monster_to_fight.get_hp() > 0:
             self.monster_to_fight.defend(self.hero, self.monster_to_fight)
         if self.hero.get_hp() == 0:
@@ -109,7 +109,6 @@ class Game:
 
     def check_if_clear_level(self):
         if "Boss" not in [monster.name for monster in Monster.monsters] and self.hero.has_key:
-            self.end_battle()
             self.clear_level()
             return True
         else:
