@@ -11,7 +11,7 @@ class Game:
         self.hero = Hero()
         self.boss = self.area.boss
         self.bind_arrow_keys()
-        self.set_message(f"Game! Kill the Boss and get the key to advance!")
+        self.set_message("Game! Kill the Boss and get the key to advance!")
 
     def get_message(self):
         return self._message
@@ -87,11 +87,11 @@ class Game:
         self.hero.strike(self.hero, self.monster_to_fight)
         self.hero.get_key(self.hero, self.monster_to_fight)
         if self.monster_to_fight.get_hp() == 0 and self.hero.just_got_key:
-            self.set_message(f"Level up! You got the key!")
+            self.set_message("Level up! You got the key!")
             self.end_battle()
         elif self.monster_to_fight.get_hp() == 0 and self.hero.just_got_key is False:
             self.hero.level_up()
-            self.set_message(f"Level up!")
+            self.set_message("Level up!")
             self.end_battle()
         if self.check_if_clear_level():
             pass
@@ -131,7 +131,7 @@ class Game:
         self.hero.x, self.hero.y = 0, 0
         self.hero.has_key = False
         self.hero.set_hp(self.hero.maxhp)
-        self.set_message(f"Entered next level! Kill the Boss and get the key to advance!")
+        self.set_message("Entered next level! Kill the Boss and get the key to advance!")
 
 
 if __name__ == '__main__':
