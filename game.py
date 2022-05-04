@@ -11,6 +11,7 @@ class Game:
         self.hero = Hero()
         self.boss = self.area.boss
         self.bind_arrow_keys()
+        self.space_bind = False
         self.set_message("Game! Kill the Boss and get the key to advance!")
 
     def get_message(self):
@@ -38,12 +39,14 @@ class Game:
 
     def bind_space_key(self):
         self.space_id = self.root.bind('<space>', self.hit_space)
+        self.space_bind = True
 
     def unbind_space_key(self):
-        self.root.unbind('<space>', self.space_id)
+        if self.space_bind == True:
+            self.root.unbind('<space>', self.space_id)
+            self.space_bind = False
 
     def hit_arrow_keys(self, event, key, axis, step):
-        self.bind_space_key()
         self.unbind_space_key()
         self.hero.img = "hero_" + key
         if self.allow_move(self.hero, (axis, step)):
