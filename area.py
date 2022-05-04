@@ -22,10 +22,6 @@ class Area:
         column = random.choice([index for index, tile in enumerate(self.map_array[row]) if tile == self.map.floor])
         self.boss = Boss(column, row, self.level)
         self.hide_key(Monster.monsters)
-        # delete this - printing out monster list in interpreter to check
-        for monster in Monster.monsters:
-            print(f"{monster.name}(Level {monster.level}) HP: {monster.get_hp()} | DP: {monster.dp} | "
-                  f"SP: {monster.sp} has_key: {monster.has_key}")
 
     def hide_key(self, monsters):
         skeletons = [monster for monster in monsters if type(monster).__name__ == "Skeleton"]
@@ -45,5 +41,3 @@ class Area:
         return possible_moves
 
 
-if __name__ == '__main__':
-    pass

@@ -92,7 +92,7 @@ class Game:
     def hit_space(self, event):
         self.hero.img = self.change_strike_img()
         self.hero.strike(self.hero, self.monster_to_fight)
-        self.hero.get_key(self.hero, self.monster_to_fight)
+        self.hero.get_key(self.monster_to_fight)
         self.end_battle()
 
     def end_battle(self):
@@ -137,9 +137,6 @@ class Game:
         self.hero.img = "hero_heart"
         self.hero.x, self.hero.y = 0, 0
         self.hero.has_key = False
-        self.hero.set_hp(self.hero.maxhp)
+        self.hero.restore_hp()
         self.set_message("Entered next level! Kill the Boss and get the key to advance!")
 
-
-if __name__ == '__main__':
-    pass

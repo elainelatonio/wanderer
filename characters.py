@@ -1,4 +1,5 @@
 from dice import Dice
+import random
 
 
 class Character:
@@ -6,7 +7,6 @@ class Character:
     def __init__(self):
         self.x = 0
         self.y = 0
-        self.level = 1
         self.type = type(self).__name__
         self.has_key = False
 
@@ -26,16 +26,12 @@ class Character:
         return position
 
     def strike(self, attacker, defender):
-        self.attacker = attacker
-        self.defender = defender
-        self.attacker.sv = self.attacker.sp + Dice.roll() * 2
-        if self.attacker.sv > self.defender.dp:
-            self.defender.set_hp(self.defender.get_hp() - (self.attacker.sv - self.defender.dp))
+        attacker.sv = attacker.sp + Dice.roll() * 2
+        if attacker.sv > defender.dp:
+            defender.set_hp(defender.get_hp() - (attacker.sv - defender.dp))
 
     def defend(self, attacker, defender):
-        self.attacker = attacker
-        self.defender = defender
-        self.strike(self.defender, self.attacker)
+        self.strike(defender, attacker)
 
 
 class Hero(Character):
@@ -64,15 +60,13 @@ class Hero(Character):
         self.y += y
         self.move_count += 1
 
-    def get_key(self, attacker, defender):
-        self.attacker = attacker
-        self.defender = defender
+    def get_key(self, monster):
         self.just_got_key = False
-        if self.defender.has_key and self.defender.get_hp() == 0:
+        if monster.has_key and monster.get_hp() == 0:
             self.level_up()
-            self.attacker.img = "hero_key"
-            self.defender.has_key = False
-            self.attacker.has_key = True
+            self.img = "hero_key"
+            monster.has_key = False
+            self.has_key = True
             self.just_got_key = True
 
     def level_up(self):
@@ -82,20 +76,29 @@ class Hero(Character):
         self.sp += Dice.roll()
         self.img = "hero_levelup"
 
+    def restore_hp(self):
+        chance = random.randint(1, 100)
+        if chance <= 10:
+            self.set_hp(self.maxhp)
+        elif chance <= 50:
+            self.set_hp(min(self.maxhp, int(self.get_hp() + self.maxhp * 0.30)))
+        elif chance > 50:
+            self.set_hp(min(self.maxhp, int(self.get_hp() + self.maxhp * 0.10)))
+
 
 class Monster(Character):
     monsters = []
 
     def __init__(self, x, y, area_level):
         super().__init__()
-        self.level = area_level
+        self.set_level(area_level)
         self.x = x
         self.y = y
         self.img = str(self.type).casefold()
-        self.hp = self.set_hp(100)  # 2 * self.level * Dice.roll())
+        self.hp = self.set_hp(2 * self.get_level() * Dice.roll())
         self.maxhp = self.hp
-        self.dp = int(max(self.level / 2 * Dice.roll(), 1))
-        self.sp = self.level * Dice.roll()
+        self.dp = int(max(self.get_level() / 2 * Dice.roll(), 1))
+        self.sp = self.get_level() * Dice.roll()
         Monster.monsters.append(self)
         self.number = Monster.monsters.index(self) + 1
         self.name = f"{self.type}{self.number}"
@@ -105,6 +108,19 @@ class Monster(Character):
             Monster.monsters.remove(self)
         self._hp = value if value > 0 else 0
         return self._hp
+
+    def get_level(self):
+        return self._level
+
+    def set_level(self, area_level):
+        chance = random.randint(1, 10)
+        if chance <= 5:
+            self._level = area_level
+        elif chance <= 9:
+            self._level = area_level + 1
+        elif chance == 10:
+            self._level = area_level + 2
+            return self._level
 
 
 class Skeleton(Monster):
@@ -118,7 +134,7 @@ class Boss(Monster):
     def __init__(self, x, y, level):
         super().__init__(x, y, level)
         self.name = self.type
-        self.hp = self.set_hp(2 * self.level * Dice.roll() + Dice.roll())
+        self.hp = self.set_hp(2 * self.get_level() * Dice.roll() + Dice.roll())
         self.maxhp = self.hp
-        self.dp = int(round(self.level / 2 * Dice.roll() + Dice.roll() / 2))
-        self.sp = self.level * Dice.roll() + self.level
+        self.dp = int(round(self.get_level() / 2 * Dice.roll() + Dice.roll() / 2))
+        self.sp = self.get_level() * Dice.roll() + self.get_level()
