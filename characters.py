@@ -92,7 +92,7 @@ class Monster(Character):
         self.x = x
         self.y = y
         self.img = str(self.type).casefold()
-        self.hp = self.set_hp(2 * self.level * Dice.roll())
+        self.hp = self.set_hp(100)  # 2 * self.level * Dice.roll())
         self.maxhp = self.hp
         self.dp = int(max(self.level / 2 * Dice.roll(), 1))
         self.sp = self.level * Dice.roll()

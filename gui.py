@@ -56,8 +56,8 @@ class Gui:
                                 text=f"{self.game.get_message()}", anchor=NW)
         if self.game.check_if_battle():
             self.canvas.create_text(470, 10 * IMG_SIZE, fill="white",
-                                    text=f"{self.game.monster_to_fight.name} (Level {self.game.monster_to_fight.level}) "
-                                         f"HP: {self.game.monster_to_fight.get_hp()}/{self.game.monster_to_fight.maxhp}"
+                                    text=f"{self.game.monster_to_fight.name} (Level {self.game.monster_to_fight.level})"
+                                         f" HP: {self.game.monster_to_fight.get_hp()}/{self.game.monster_to_fight.maxhp}"
                                          f" | DP: {self.game.monster_to_fight.dp} | "
                                          f"SP: {self.game.monster_to_fight.sp}", anchor=NW, width=240, justify=RIGHT)
 

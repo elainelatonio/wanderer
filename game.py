@@ -9,9 +9,8 @@ class Game:
         self.root = root
         self.area = Area()
         self.hero = Hero()
-        self.boss = self.area.boss
         self.bind_arrow_keys()
-        self.space_bind = False
+        self.space_key_bound = False
         self.set_message("Game! Kill the Boss and get the key to advance!")
 
     def get_message(self):
@@ -39,19 +38,19 @@ class Game:
 
     def bind_space_key(self):
         self.space_id = self.root.bind('<space>', self.hit_space)
-        self.space_bind = True
+        self.space_key_bound = True
 
     def unbind_space_key(self):
-        if self.space_bind == True:
+        if self.space_key_bound:
             self.root.unbind('<space>', self.space_id)
-            self.space_bind = False
+            self.space_key_bound = False
 
     def hit_arrow_keys(self, event, key, axis, step):
         self.unbind_space_key()
         self.hero.img = "hero_" + key
         if self.allow_move(self.hero, (axis, step)):
             self.set_message("")
-            self.take_step(self.hero,axis,step)
+            self.take_step(self.hero, axis, step)
             self.random_move(Monster.monsters)
         if self.check_if_battle():
             self.start_battle()
@@ -91,9 +90,12 @@ class Game:
         self.bind_space_key()
 
     def hit_space(self, event):
-        self.hero.img = self.count_strikes()
+        self.hero.img = self.change_strike_img()
         self.hero.strike(self.hero, self.monster_to_fight)
         self.hero.get_key(self.hero, self.monster_to_fight)
+        self.end_battle()
+
+    def end_battle(self):
         if self.monster_to_fight.get_hp() == 0 and self.hero.just_got_key:
             self.set_message("Level up! You got the key!")
             self.unbind_space_key()
@@ -108,7 +110,7 @@ class Game:
         if self.hero.get_hp() == 0:
             self.end_game()
 
-    def count_strikes(self):
+    def change_strike_img(self):
         self.hero.strike_count += 1
         if self.hero.strike_count % 2 == 0:
             return "hero_fight"
@@ -121,7 +123,6 @@ class Game:
             return True
         else:
             return False
-
 
     def end_game(self):
         self.set_message("GAME OVER")
