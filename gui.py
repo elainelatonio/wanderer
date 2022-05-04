@@ -22,10 +22,27 @@ class Gui:
 
     def draw_screen(self):
         self.canvas.delete("all")
-        self.game.area.draw_map(self.canvas, IMG_SIZE, self.root)
-        self.game.area.place_characters(self.canvas, IMG_SIZE, self.root, self.game.hero)
+        self.draw_map()
         self.canvas.create_rectangle(0, 10 * IMG_SIZE, 10.5 * IMG_SIZE, 10.5 * IMG_SIZE, fill="black")
+        self.display_characters()
         self.display_text()
+
+    def draw_map(self):
+        line_num = 0
+        for line in self.game.area.map_array:
+            for index in range(len(line)):
+                if line[index] == self.game.area.map.floor:
+                    self.canvas.create_image(IMG_SIZE * index, IMG_SIZE * line_num, image=self.root.floor, anchor=NW)
+                elif line[index] == self.game.area.map.wall:
+                    self.canvas.create_image(IMG_SIZE * index, IMG_SIZE * line_num, image=self.root.wall, anchor=NW)
+            line_num += 1
+
+    def display_characters(self):
+        for monster in Monster.monsters:
+            self.canvas.create_image(monster.x * IMG_SIZE, monster.y * IMG_SIZE, image=getattr(self.root, monster.img),
+                                     anchor=NW)
+        self.canvas.create_image(self.game.hero.x * IMG_SIZE, self.game.hero.y * IMG_SIZE,
+                                 image=getattr(self.root, self.game.hero.img), anchor=NW)
 
     def display_text(self):
         self.canvas.create_text(10, 10 * IMG_SIZE, fill="white",
