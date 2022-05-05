@@ -15,10 +15,10 @@ class Area:
 
     def generate_monsters(self):
         for num_of_skeletons in range(random.randint(2, 5)):
-            row = random.randint(0, 9)
+            row = random.randint(1, 9)
             column = random.choice([index for index, tile in enumerate(self.map_array[row]) if tile == self.map.floor])
             Skeleton(column, row, self.level)
-        row = random.randint(0, 9)
+        row = random.randint(1, 9)
         column = random.choice([index for index, tile in enumerate(self.map_array[row]) if tile == self.map.floor])
         self.boss = Boss(column, row, self.level)
         self.hide_key(Monster.monsters)

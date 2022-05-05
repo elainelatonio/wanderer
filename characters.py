@@ -113,12 +113,12 @@ class Monster(Character):
         return self._level
 
     def set_level(self, area_level):
-        chance = random.randint(1, 10)
-        if chance <= 5:
+        chance = random.randint(1, 100)
+        if chance <= 50:
             self._level = area_level
-        elif chance <= 9:
+        elif chance <= 90:
             self._level = area_level + 1
-        elif chance == 10:
+        elif chance > 90:
             self._level = area_level + 2
             return self._level
 
